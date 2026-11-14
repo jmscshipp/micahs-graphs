@@ -28,12 +28,16 @@ async function loadData() {
 var chartElement = document.getElementById("chart");
 
 function loadChart() {
-  var chart = new Chart(chartElement, viewsOverTimeConfig);
+  var chart = new Chart(chartElement, viewsByPlatformConfig);
 }
 
 loadData();
 
 var viewsOverTimeConfig;
+var viewsByPlatformConfig;
+
+var viewsByFranchiseConfig;
+var viewsByDayOfWeekConfig;
 
 function loadChartConfigs() {
   viewsOverTimeConfig = {
@@ -80,6 +84,51 @@ function loadChartConfigs() {
           tension: 0,
           borderColor: green,
           backgroundColor: green,
+        },
+      ],
+    },
+  };
+
+  var totalYouTubeViews = 0;
+  var totalTikTokViews = 0;
+  var totalInstagramViews = 0;
+
+  data.forEach((element) => {
+    totalYouTubeViews += element.youtubeViews;
+    totalTikTokViews += element.tiktokViews;
+    totalInstagramViews += element.instagramViews;
+  });
+
+  viewsByPlatformConfig = {
+    type: "bar",
+    options: {
+      animation: false,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        tooltip: {
+          enabled: false,
+        },
+        title: {
+          display: true,
+          text: "Total Views By Platform",
+          padding: {
+            top: 100,
+            bottom: 10,
+          },
+        },
+      },
+    },
+    data: {
+      labels: ["YouTube", "TikTok", "Instagram"],
+      datasets: [
+        {
+          label: "TikTok",
+          data: [totalYouTubeViews, totalTikTokViews, totalInstagramViews],
+          tension: 0,
+          borderColor: [red, blue, green],
+          backgroundColor: [red, blue, green],
         },
       ],
     },
